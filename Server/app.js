@@ -16,16 +16,16 @@ const con = mysql.createConnection({
     host: "localhost",
     user: "root",
     password: "",
-    database: "lama",
+    database: "lam",
 });
 
-//Routes
+//Routes6
 //READ
 app.get("/medziai", (req, res) => {
     const sql = `
   SELECT
   *
-  FROM trees
+  FROM zolts
 `;
     con.query(sql, (err, result) => {
         if (err) throw err;
@@ -37,11 +37,11 @@ app.get("/medziai", (req, res) => {
 // VALUES (value1, value2, value3, ...);
 app.post("/medziai", (req, res) => {
     const sql = `
-INSERT INTO trees
-(type, title, height)
-VALUES (?, ?, ?)
+INSERT INTO zolts
+(status, lastTime, totalKm, name, type, place)
+VALUES (?, ?, ?, ?, ?, ?)
 `;
-    con.query(sql, [req.body.type, req.body.title, req.body.height], (err, result) => {
+    con.query(sql, [req.body.status, req.body.lastTime, req.body.totalKm, req.body.name, req.body.type, req.body.place, req.params.treeId], (err, result) => {
         if (err) throw err;
         res.send({ result, msg: { text: 'Created', type: 'success' } });
     });
@@ -51,7 +51,7 @@ VALUES (?, ?, ?)
 // DELETE FROM table_name WHERE condition;
 app.delete("/medziai/:treeId", (req, res) => {
     const sql = `
-DELETE FROM trees
+DELETE FROM zolts
 WHERE id = ?
 `;
     con.query(sql, [req.params.treeId], (err, result) => {
@@ -66,11 +66,11 @@ WHERE id = ?
 // WHERE condition;
 app.put("/medziai/:treeId", (req, res) => {
     const sql = `
-    UPDATE trees
-    SET title = ?, type = ?, height = ?
+    UPDATE zolts
+    SET status = ?, lastTime = ?, totalKm = ?, name = ?, type = ?, place = ?
     WHERE id = ?
 `;
-    con.query(sql, [req.body.title, req.body.type, req.body.height, req.params.treeId], (err, result) => {
+    con.query(sql, [req.body.status, req.body.lastTime, req.body.totalKm, req.body.name, req.body.type, req.body.place, req.params.treeId], (err, result) => {
         if (err) throw err;
         res.send({ result, msg: { text: 'Edited', type: 'info' } });
     });

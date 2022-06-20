@@ -16,16 +16,16 @@ const con = mysql.createConnection({
     host: "localhost",
     user: "root",
     password: "",
-    database: "lam",
+    database: "lama",
 });
 
-//Routes6
+//Routes
 //READ
 app.get("/medziai", (req, res) => {
     const sql = `
   SELECT
   *
-  FROM zolts
+  FROM trees
 `;
     con.query(sql, (err, result) => {
         if (err) throw err;
@@ -37,9 +37,9 @@ app.get("/medziai", (req, res) => {
 // VALUES (value1, value2, value3, ...);
 app.post("/medziai", (req, res) => {
     const sql = `
-INSERT INTO zolts
-(status, lastTime, totalKm, name, type, place)
-VALUES (?, ?, ?, ?, ?, ?)
+INSERT INTO trees
+(type, title, height)
+VALUES (?, ?, ?)
 `;
     con.query(sql, [req.body.type, req.body.title, req.body.height], (err, result) => {
         if (err) throw err;
@@ -51,7 +51,7 @@ VALUES (?, ?, ?, ?, ?, ?)
 // DELETE FROM table_name WHERE condition;
 app.delete("/medziai/:treeId", (req, res) => {
     const sql = `
-DELETE FROM zolts
+DELETE FROM trees
 WHERE id = ?
 `;
     con.query(sql, [req.params.treeId], (err, result) => {
@@ -66,11 +66,11 @@ WHERE id = ?
 // WHERE condition;
 app.put("/medziai/:treeId", (req, res) => {
     const sql = `
-    UPDATE zolts
-    SET status = ?, lastTime = ?, totalKm = ?, name = ?, type = ?, place = ?
+    UPDATE trees
+    SET title = ?, type = ?, height = ?
     WHERE id = ?
 `;
-    con.query(sql, [req.body.status, req.body.lastTime, req.body.totalKm, req.body.name, req.body.type, req.body.place, req.params.treeId], (err, result) => {
+    con.query(sql, [req.body.title, req.body.type, req.body.height, req.params.treeId], (err, result) => {
         if (err) throw err;
         res.send({ result, msg: { text: 'Edited', type: 'info' } });
     });

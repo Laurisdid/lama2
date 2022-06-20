@@ -4,14 +4,15 @@ import { useContext , useState} from "react";
 import Zolt from "./Zolt";
 import ZoltContext from "./ZoltContext";
 
-function List({zolt,setDeleteData, setModalData}) {
+function List({setDeleteData, setModalData}) {
 
-    const {zolts} = useContext(ZoltContext);
+    const {zolt} = useContext(ZoltContext);
     const [sortState, setSortState] = useState("none");
     const sortMethods = {
         none: { method: (a, b) => null },
         id: {
             method: (a, b) => {
+                console.log(zolt)
                 if (a.id > b.id) return 1;
                 if (b.id > a.id) return -1;
                 return 0
@@ -51,7 +52,7 @@ function List({zolt,setDeleteData, setModalData}) {
                         </div>
                     </li></div>
                     {
-                        zolts ? [...zolts].sort(sortMethods[sortState].method).map(ex => <Zolt
+                        zolt ? [...zolt].sort(sortMethods[sortState].method).map(zolt => <Zolt
                             key={zolt.id}
                             zolt={zolt}
                             setDeleteData={setDeleteData}
