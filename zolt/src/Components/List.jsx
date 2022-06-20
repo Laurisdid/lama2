@@ -6,13 +6,13 @@ import ZoltContext from "./ZoltContext";
 
 function List({setDeleteData, setModalData}) {
 
-    const {zolt} = useContext(ZoltContext);
+    const {zolts} = useContext(ZoltContext);
     const [sortState, setSortState] = useState("none");
     const sortMethods = {
         none: { method: (a, b) => null },
         id: {
             method: (a, b) => {
-                console.log(zolt)
+            
                 if (a.id > b.id) return 1;
                 if (b.id > a.id) return -1;
                 return 0
@@ -26,6 +26,7 @@ function List({setDeleteData, setModalData}) {
             }
         }
     };
+
     return (
         <div className="card mt-4">
             <div className="card-header">
@@ -52,7 +53,7 @@ function List({setDeleteData, setModalData}) {
                         </div>
                     </li></div>
                     {
-                        zolt ? [...zolt].sort(sortMethods[sortState].method).map(zolt => <Zolt
+                        zolts ? [...zolts].sort(sortMethods[sortState].method).map(zolt => <Zolt
                             key={zolt.id}
                             zolt={zolt}
                             setDeleteData={setDeleteData}

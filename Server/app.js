@@ -41,7 +41,7 @@ INSERT INTO zolts
 (status, lastTime, totalKm, name, type, place)
 VALUES (?, ?, ?, ?, ?, ?)
 `;
-    con.query(sql, [req.body.status, req.body.lastTime, req.body.totalKm, req.body.name, req.body.type, req.body.place, req.params.treeId], (err, result) => {
+    con.query(sql, [req.body.status, req.body.lastTime, req.body.totalKm, req.body.name, req.body.type, req.body.place], (err, result) => {
         if (err) throw err;
         res.send({ result, msg: { text: 'Created', type: 'success' } });
     });

@@ -6,7 +6,7 @@ import date from "./date";
 function Edit() {
    const { modalData, setModalData, setEditData } = useContext(ZoltContext);
    const [addKm,setAddKm]=useState();
-   const [id, setId] = useState('');
+//    const [id, setId] = useState('');
    const [status, setStatus] = useState('0');
    const [lastTime, setLastTime] = useState(date);
    const [totalKm, setTotalKm] = useState(0);
@@ -18,19 +18,20 @@ function Edit() {
         if (null === modalData) {
             return;
         }
-        setId(modalData.id);
-        setStatus(modalData.status);
+        setName(modalData.name);
         setLastTime(modalData.lastTime);
         setTotalKm(modalData.totalKm);
-        setName(modalData.name);
         setType(modalData.type);
+         setStatus(modalData.status);
         setPlace(modalData.place);
+        console.log(modalData);
     }, [modalData]);
 
     const handleEdit = () => {
-        const data = {id, status,lastTime,totalKm,name, type, place, id: modalData.id };
+        const data = { status,lastTime,totalKm,name, type, place,id: modalData.id};
         setEditData(data);
         setModalData(null);
+        console.log(modalData);
     }
 
     if (null === modalData) {
@@ -42,7 +43,7 @@ function Edit() {
             <div className="modal-dialog modal-dialog-centered">
                 <div className="modal-content">
                     <div className="modal-header">
-                        <h5 className="modal-title">Ex Changer</h5>
+                        <h5 className="modal-title">zolt Changer</h5>
                         <button type="button" className="close" onClick={() => setModalData(null)}>
                             <span>&times;</span>
                         </button>

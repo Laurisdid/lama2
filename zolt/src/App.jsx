@@ -11,7 +11,7 @@ import Message from "./Components/Message";
 
 function App() {
   const [lastUpdate, setLastUpdate] = useState(Date.now());
-  const [trees, setTrees] = useState(null);
+  const [zolts, setZolts] = useState(null);
   const [modalData, setModalData] = useState(null);
   const [createData, setCreateData] = useState(null);
   const [deleteData, setDeleteData] = useState(null);
@@ -24,7 +24,7 @@ function App() {
   useEffect(() => {
     axios
       .get("http://localhost:3003/medziai")
-      .then((res) => setTrees(res.data));
+      .then((res) => setZolts(res.data));
   }, [lastUpdate]);
 
   // Create
@@ -59,7 +59,10 @@ function App() {
   useEffect(() => {
     if (null === editData) return;
     axios
-      .put("http://localhost:3003/medziai/" + editData.id, editData)
+      .put(`http://localhost:3003/medziai/${editData.id}`, editData)
+      .catch((error) => {
+        showMessage({ text: error.message, type: "danger" })
+      })
       .then((res) => {
         showMessage(res.data.msg);
         setLastUpdate(Date.now());
@@ -73,7 +76,7 @@ function App() {
   return (
     <ZoltContext.Provider
       value={{
-        trees,
+        zolts,
         setCreateData,
         setDeleteData,
         setModalData,

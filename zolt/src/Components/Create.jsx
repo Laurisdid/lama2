@@ -8,7 +8,7 @@ function Create() {
   const { setCreateData, disableCreate, setDisableCreate } =
     useContext(ZoltContext);
 
-  const [id, setId] = useState("");
+  // const [id, setId] = useState("");
   const [status, setStatus] = useState("0");
   const [lastTime, setLastTime] = useState(date);
   const [totalKm, setTotalKm] = useState(parseFloat(0));
@@ -19,7 +19,7 @@ function Create() {
   const handleCreate = () => {
     setDisableCreate(true);
     const data = {
-      id,
+      // id,
       status,
       lastTime,
       totalKm: parseFloat(totalKm),
@@ -28,7 +28,7 @@ function Create() {
       place,
     };
     setCreateData(data);
-    setId("");
+    // setId("");
     setStatus("0");
     setLastTime(date);
     setTotalKm(0);
