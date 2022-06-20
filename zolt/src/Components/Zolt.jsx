@@ -24,7 +24,7 @@ function Zolt({zolt}) {
                 <b>{zolt.totalKm}</b>
                 <b>{zolt.status}</b>
                 <b>{zolt.place}</b>
-                <b>{zolt.type}</b>
+              {/* <b>{zolt.type}</b> */}
             </div>
             <div className="buttons">
                 <button type="button" className="btn btn-outline-success ml-2" onClick={handleEdit}>Edit</button>
