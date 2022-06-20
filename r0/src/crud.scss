@@ -1,0 +1,31 @@
+.list-group-item{
+    .item{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        .content{
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+        }
+        .buttons{
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+        }
+        b {
+            margin-right: 7px;
+        }
+        i{
+            margin-right: 7px;
+        }
+        }
+
+
+    
+}
+.modal{
+    display: block;
+    background-color: grey;
+}
