@@ -3,14 +3,14 @@ import TreeContext from "./TreeContext";
 
 function Tree({tree}) {
 
-    const {setDeleteData} = useContext(TreeContext);
+    const {setDeleteData, setModalData} = useContext(TreeContext);
 
     const handleDelete = () => {
         setDeleteData(tree);
     }
 
     const handleEdit = () => {
-        // setModalData(tree);
+         setModalData(tree);
     }
 
     return (

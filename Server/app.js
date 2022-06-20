@@ -16,7 +16,7 @@ const con = mysql.createConnection({
     host: "localhost",
     user: "root",
     password: "",
-    database: "lam",
+    database: "lama",
 });
 
 //Routes
@@ -60,6 +60,21 @@ WHERE id = ?
     });
 });
 
+//EDIT
+// UPDATE table_name
+// SET column1 = value1, column2 = value2, ...
+// WHERE condition;
+app.put("/medziai/:treeId", (req, res) => {
+    const sql = `
+    UPDATE trees
+    SET title = ?, type = ?, height = ?
+    WHERE id = ?
+`;
+    con.query(sql, [req.body.title, req.body.type, req.body.height, req.params.treeId], (err, result) => {
+        if (err) throw err;
+        res.send(result);
+    });
+});
 
 
 
