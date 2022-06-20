@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import "./bootstrap.css";
-import "./crud.scss";
+import axios from "axios";
+import './App.css';
+import './crud.scss';
+import './bootstrap.css'
 import Create from "./Components/Create";
 import List from "./Components/List";
 import Edit from "./Components/Edit";
-import TreeContext from "./Components/TreeContext";
-import axios from "axios";
+import ZoltContext from "./Components/ZoltContext";
 import Message from "./Components/Message";
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
   const [editData, setEditData] = useState(null);
   const [message, setMessage] = useState(null);
   const [disableCreate, setDisableCreate] = useState(false);
+
 
   //Read
   useEffect(() => {
@@ -68,9 +70,8 @@ function App() {
     setMessage(msg);
     setTimeout(() => setMessage(null), 5000);
   };
-console.log(modalData)
   return (
-    <TreeContext.Provider
+    <ZoltContext.Provider
       value={{
         trees,
         setCreateData,
@@ -95,7 +96,8 @@ console.log(modalData)
       </div>
       <Edit />
       <Message />
-    </TreeContext.Provider>
+    </ZoltContext.Provider>
   );
 }
+
 export default App;
