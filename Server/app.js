@@ -43,7 +43,7 @@ VALUES (?, ?, ?)
 `;
     con.query(sql, [req.body.type, req.body.title, req.body.height], (err, result) => {
         if (err) throw err;
-        res.send(result);
+        res.send({ result, msg: { text: 'OK, Zuiki', type: 'success' } });
     });
 });
 
@@ -56,7 +56,7 @@ WHERE id = ?
 `;
     con.query(sql, [req.params.treeId], (err, result) => {
         if (err) throw err;
-        res.send(result);
+        res.send({ result, msg: { text: 'OK, Bebrai', type: 'info' } });
     });
 });
 
@@ -72,7 +72,7 @@ app.put("/medziai/:treeId", (req, res) => {
 `;
     con.query(sql, [req.body.title, req.body.type, req.body.height, req.params.treeId], (err, result) => {
         if (err) throw err;
-        res.send(result);
+        res.send({ result, msg: { text: 'OK, Barsukai', type: 'danger' } });
     });
 });
 

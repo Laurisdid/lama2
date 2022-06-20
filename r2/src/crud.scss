@@ -30,3 +30,11 @@ body {
     display: block;
     background-color: rgba(0, 0, 0, 0.5);
 }
+.show-message{
+    display: flex;
+    position: fixed;
+    top:50px;
+    width: 100%;
+    justify-content: center;
+
+}
