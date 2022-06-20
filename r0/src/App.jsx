@@ -1,34 +1,26 @@
-import { useState } from "react";
-import "./App.scss";
-import Pokemon from "./Components/pokemons challange/Pokemon";
+import './App.scss';
+import {useState, useEffect} from 'react'
+import axios from 'axios'
+
+
 
 function App() {
-  const [pokemon, setPokemon] = useState([]);
-
-  const getData = () => {
-    fetch("https://pokeapi.co/api/v2/pokemon")
-      .then((response) => response.json())
-      .then((data) => {
-        setPokemon(data.results);
-      });
-  };
   
-  getData();
+  const [trees, setTrees]=useState([]);
+useEffect(()=>{
+  axios.get('http://localhost:3003/medziai')
+  .then(res=>{
+    setTrees(res.data);
+  });
+},[]);
+
   return (
     <div className="App">
       <header className="App-header">
-        <div style={{width:'70%'}}>
-          <>
-            {pokemon.map((pokemon) => (
-              <Pokemon
-                key={pokemon.name}
-                name={pokemon.name}
-                url={pokemon.url}
-              />
-            ))}
-          </>
-          ;
-        </div>
+     <div>Medziai :</div>
+     {
+       trees.map(t=><div key={t.id}>{t.title}</div>)
+     }
       </header>
     </div>
   );
