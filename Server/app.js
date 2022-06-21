@@ -16,16 +16,20 @@ const con = mysql.createConnection({
     host: "localhost",
     user: "root",
     password: "",
-    database: "la_ma",
+    database: "lama",
 });
+
+
 
 //Routes
 //READ
 app.get("/medziai", (req, res) => {
     const sql = `
   SELECT
-  *
-  FROM trees
+  t.title AS title, g.title AS good,height, type, t.id
+  FROM trees AS t
+  LEFT JOIN goods AS g
+  ON t.good_id = g.id
 `;
     con.query(sql, (err, result) => {
         if (err) throw err;
