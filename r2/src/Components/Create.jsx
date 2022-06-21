@@ -4,19 +4,21 @@ import TreeContext from "./TreeContext";
 
 function Create() {
 
-    const { setCreateData, disableCreate, setDisableCreate } = useContext(TreeContext);
+    const { setCreateData, disableCreate, setDisableCreate, goods } = useContext(TreeContext);
 
     const [title, setTitle] = useState('');
     const [type, setType] = useState('1');
     const [height, setHeight] = useState('');
+    const [good, setGood] = useState('0');
 
     const handleCreate = () => {
         setDisableCreate(true);
-        const data = { title, type, height };
+        const data = { title, type, height, good };
         setCreateData(data);
         setTitle('');
         setType('1');
         setHeight('');
+        setGood('0');
     }
 
     
@@ -40,6 +42,16 @@ function Create() {
                         <option value="3">Palm</option>
                     </select>
                     <small className="form-text text-muted">Select tree type here.</small>
+                </div>
+                <div className="form-group">
+                    <label>Goods</label>
+                    <select className="form-control" onChange={e => setGood(e.target.value)} value={good}>
+                        <option value="0" disabled>Select Goods</option>
+                        {
+                            goods ? goods.map(g => <option key={g.id} value={g.id}>{g.title}</option>) : null
+                        }
+                    </select>
+                    <small className="form-text text-muted">Select nice goody.</small>
                 </div>
                 <div className="form-group">
                     <label>Height</label>

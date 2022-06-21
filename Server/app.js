@@ -16,16 +16,27 @@ const con = mysql.createConnection({
     host: "localhost",
     user: "root",
     password: "",
-    database: "lam",
+    database: "la_ma",
 });
 
-//Routes6
+//Routes
 //READ
 app.get("/medziai", (req, res) => {
     const sql = `
   SELECT
   *
-  FROM zolts
+  FROM trees
+`;
+    con.query(sql, (err, result) => {
+        if (err) throw err;
+        res.send(result);
+    });
+});
+app.get("/gerybes", (req, res) => {
+    const sql = `
+  SELECT
+  *
+  FROM goods
 `;
     con.query(sql, (err, result) => {
         if (err) throw err;
@@ -33,17 +44,29 @@ app.get("/medziai", (req, res) => {
     });
 });
 //CREATE
+
 // INSERT INTO table_name (column1, column2, column3, ...)
 // VALUES (value1, value2, value3, ...);
 app.post("/medziai", (req, res) => {
     const sql = `
-INSERT INTO zolts
-(status, lastTime, totalKm, name, type, place)
-VALUES (?, ?, ?, ?, ?, ?)
+INSERT INTO trees
+(type, title, height, good_id)
+VALUES (?, ?, ?, ?)
 `;
-    con.query(sql, [req.body.status, req.body.lastTime, req.body.totalKm, req.body.name, req.body.type, req.body.place], (err, result) => {
+    con.query(sql, [req.body.type, req.body.title, req.body.height, req.body.good], (err, result) => {
         if (err) throw err;
-        res.send({ result, msg: { text: 'Created', type: 'success' } });
+        res.send({ result, msg: { text: 'OK, Zuiki', type: 'success' } });
+    });
+});
+app.post("/gerybes", (req, res) => {
+    const sql = `
+INSERT INTO goods
+(title)
+VALUES (?)
+`;
+    con.query(sql, [req.body.title], (err, result) => {
+        if (err) throw err;
+        res.send({ result, msg: { text: 'OK, Zuiki', type: 'success' } });
     });
 });
 
@@ -51,12 +74,12 @@ VALUES (?, ?, ?, ?, ?, ?)
 // DELETE FROM table_name WHERE condition;
 app.delete("/medziai/:treeId", (req, res) => {
     const sql = `
-DELETE FROM zolts
+DELETE FROM trees
 WHERE id = ?
 `;
     con.query(sql, [req.params.treeId], (err, result) => {
         if (err) throw err;
-        res.send({ result, msg: { text: 'Deleted', type: 'danger' } });
+        res.send({ result, msg: { text: 'OK, Bebrai', type: 'info' } });
     });
 });
 
@@ -66,13 +89,13 @@ WHERE id = ?
 // WHERE condition;
 app.put("/medziai/:treeId", (req, res) => {
     const sql = `
-    UPDATE zolts
-    SET status = ?, lastTime = ?, totalKm = ?, name = ?, type = ?, place = ?
+    UPDATE trees
+    SET title = ?, type = ?, height = ?
     WHERE id = ?
 `;
-    con.query(sql, [req.body.status, req.body.lastTime, req.body.totalKm, req.body.name, req.body.type, req.body.place, req.params.treeId], (err, result) => {
+    con.query(sql, [req.body.title, req.body.type, req.body.height, req.params.treeId], (err, result) => {
         if (err) throw err;
-        res.send({ result, msg: { text: 'Edited', type: 'info' } });
+        res.send({ result, msg: { text: 'OK, Barsukai', type: 'danger' } });
     });
 });
 
