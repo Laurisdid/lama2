@@ -24,7 +24,7 @@ function Edit() {
         setType(modalData.type);
          setStatus(modalData.status);
         setPlace(modalData.place);
-        console.log(modalData);
+     //   console.log(modalData);
     }, [modalData]);
 
     const handleEdit = () => {

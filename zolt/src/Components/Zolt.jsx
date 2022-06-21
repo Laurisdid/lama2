@@ -10,7 +10,7 @@ function Zolt({zolt}) {
     }
 
     const handleEdit = () => {
-        console.log(zolt);
+        // console.log(zolt);
          setModalData(zolt);
     }
 

@@ -54,7 +54,7 @@ function App() {
         setLastUpdate(Date.now());
       });
   }, [deleteData]);
-  console.log=(x)=>alert(new String(x));
+  // console.log=(x)=>alert(new String(x));
   // Edit
   useEffect(() => {
     if (null === editData) return;
