@@ -3,10 +3,11 @@ import { useEffect, useState } from "react";
 import TreeContext from "./TreeContext";
 
 function Edit() {
-   const { modalData, setModalData, setEditData } = useContext(TreeContext);
+   const { modalData, setModalData, setEditData,goods } = useContext(TreeContext);
     const [title, setTitle] = useState('');
     const [type, setType] = useState('1');
     const [height, setHeight] = useState('');
+    const [good, setGood] = useState('0');
 
     useEffect(() => {
         if (null === modalData) {
@@ -15,11 +16,14 @@ function Edit() {
         setTitle(modalData.title);
         setType(modalData.type);
         setHeight(modalData.height);
+        setGood(goods.filter(g=>modalData.good=== g.title)[0]?.id??0);
+
     }, [modalData]);
 
     const handleEdit = () => {
-        const data = { title, type, height, id: modalData.id };
+        const data = { title, type, height,good, id: modalData.id  };
         setEditData(data);
+        console.log('reeeeeeeeeeeeee',data)
         setModalData(null);
     }
 
@@ -57,6 +61,15 @@ function Edit() {
                             <input type="text" className="form-control" onChange={e => setHeight(e.target.value)} value={height} />
                             <small className="form-text text-muted">Enter height place here.</small>
                         </div>
+                        <label>Goods</label>
+                    <select className="form-control" onChange={e => setGood(e.target.value)} value={good}>
+                        <option value="0" disabled>Select Goods</option>
+                        {
+                            goods ? goods.map(g => <option key={g.id} value={g.id}>{g.title}</option>) : null
+                        }
+                    </select>
+                    <small className="form-text text-muted">Select nice goody.</small>
+
                     </div>
                     <div className="modal-footer">
                         <button type="button" className="btn btn-outline-secondary" onClick={() => setModalData(null)}>Close</button>

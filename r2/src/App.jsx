@@ -10,6 +10,7 @@ import Message from './Components/Message';
 import GoodContext from './Components/goods/GoodContext';
 
 import CreateGoods from './Components/goods/Create';
+import ListGoods from './Components/goods/List';
 
 function App() {
 
@@ -25,13 +26,13 @@ function App() {
   //Goods
   const [goods, setGoods] = useState(null);
   const [createDataGoods, setCreateDataGoods] = useState(null);
-
+  const [deleteDataGoods, setDeleteDataGoods] = useState(null)
 
 
   const [message, setMessage] = useState(null);
   const [disableCreate, setDisableCreate] = useState(false);
 
-//////////////////TREES?/////////////////////////////
+  //////////////////TREES?/////////////////////////////
   //Read
   useEffect(() => {
     axios.get('http://localhost:3003/medziai')
@@ -76,7 +77,7 @@ function App() {
       });
   }, [editData]);
 
-//////////////GOODS//////////////////////
+  //////////////GOODS//////////////////////
 
 
   // Create
@@ -96,7 +97,15 @@ function App() {
 
 
 
-
+// Delete
+useEffect(() => {
+  if (null === deleteDataGoods) return;
+  axios.delete('http://localhost:3003/gerybes/' + deleteDataGoods.id)
+    .then(res => {
+      showMessage(res.data.msg);
+      setLastUpdate(Date.now());
+    });
+}, [deleteDataGoods]);
 
 
 
@@ -125,22 +134,25 @@ function App() {
         goods
       }
     }>
-    <GoodContext.Provider value={{
-      setCreateData: setCreateDataGoods
-    }}>
-      <div className="container">
-        <div className="row">
-          <div className="col-4">
-            <Create />
-            <CreateGoods/>
-          </div>
-          <div className="col-8">
-            <List></List>
+      <GoodContext.Provider value={{
+        setCreateData: setCreateDataGoods,goods,
+        setDeleteData:setDeleteDataGoods
+        
+      }}>
+        <div className="container">
+          <div className="row">
+            <div className="col-4">
+              <Create />
+              <CreateGoods />
+              <ListGoods/>
+            </div>
+            <div className="col-8">
+              <List></List>
+            </div>
           </div>
         </div>
-      </div>
-      <Edit />
-      <Message />
+        <Edit />
+        <Message />
       </GoodContext.Provider>
     </TreeContext.Provider>
   );
