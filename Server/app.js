@@ -39,8 +39,12 @@ app.get("/medziai", (req, res) => {
 app.get("/gerybes", (req, res) => {
     const sql = `
   SELECT
-  *
-  FROM goods
+  g.title,g.id, COUNT(t.id) AS trees_count
+  FROM trees AS t
+  RIGHT JOIN goods AS g
+  On t.good_id = g.id
+  GROUP BY g.id
+  ORDER BY g.title
 `;
     con.query(sql, (err, result) => {
         if (err) throw err;
