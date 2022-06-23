@@ -5,7 +5,7 @@ import {
     Routes,
     Route,
   } from "react-router-dom";
-
+//npm install react-router-dom@6
 function App(){
 
     return(
