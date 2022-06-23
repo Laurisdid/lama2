@@ -126,3 +126,47 @@ app.put("/medziai/:treeId", (req, res) => {
 app.listen(port, () => {
     console.log(`Bebras klauso porto Nr ${port}`);
 });
+
+// read 
+app.get("/front/gerybes", (req, res) => {
+    const sql = `
+  SELECT
+  g.title,g.id, COUNT(t.id) AS trees_count, GROUP_CONCAT (t.title) as tree_titles
+  FROM trees AS t
+  RIGHT JOIN goods AS g
+  On t.good_id = g.id
+  GROUP BY g.id
+  ORDER BY g.title
+`;
+    con.query(sql, (err, result) => {
+        if (err) throw err;
+        res.send(result);
+    });
+});
+//READ
+app.get("/front/medziai", (req, res) => {
+    const sql = `
+  SELECT
+  t.title AS title, g.title AS good,height, type, t.id
+  FROM trees AS t
+  LEFT JOIN goods AS g
+  ON t.good_id = g.id
+`;
+    con.query(sql, (err, result) => {
+        if (err) throw err;
+        res.send(result);
+    });
+});
+
+//post
+app.post("/front/komentarai", (req, res) => {
+    const sql = `
+INSERT INTO goods
+(title)
+VALUES (?)
+`;
+    con.query(sql, [req.body.title], (err, result) => {
+        if (err) throw err;
+        res.send({ result, msg: { text: 'OK, Zuiki', type: 'success' } });
+    });
+});
