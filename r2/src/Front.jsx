@@ -8,7 +8,8 @@ function Front() {
 
     const [goods, setGoods] = useState(null);
     const [trees, setTrees] = useState(null);
-    const [comment,setComment]=useState('')
+    const [createComment, setCreateComment] = useState(null);
+
     // Read
     useEffect(() => {
         axios.get('http://localhost:3003/front/gerybes')
@@ -17,29 +18,34 @@ function Front() {
                 setGoods(res.data);
             });
     }, []);
-     // Read
-     useEffect(() => {
+
+    useEffect(() => {
         axios.get('http://localhost:3003/front/medziai')
             .then(res => {
                 console.log(res.data);
                 setTrees(res.data);
             });
     }, []);
-    //create
-      // Create
+
+
+
+  // Create
   useEffect(() => {
     if (null === createComment) return;
-    axios.post('http://localhost:3003/front/comments', createComment)
+    axios.post('http://localhost:3003/front/komentarai', createComment)
       .then(_ => {
-      //  setLastUpdate(Date.now());
+        // setLastUpdate(Date.now());
       })
   }, [createComment]);
+
+
 
     return (
         <FrontContext.Provider value={
             {
                 goods,
-                trees
+                trees,
+                setCreateComment
             }
         }>
             <div className="container">
