@@ -4,7 +4,7 @@ import ZoltContext from "./ZoltContext";
 import date from "./date";
 
 function Edit() {
-   const { modalData, setModalData, setEditData } = useContext(ZoltContext);
+   const { modalData, setModalData, setEditData,goods } = useContext(ZoltContext);
    const [addKm,setAddKm]=useState();
 //    const [id, setId] = useState('');
    const [status, setStatus] = useState('0');
@@ -13,6 +13,7 @@ function Edit() {
    const [name, setName] = useState('');
    const [type, setType] = useState('1');
    const [place, setPlace] = useState('Gamykla');
+   const [good, setGood]=useState('0')
 
     useEffect(() => {
         if (null === modalData) {
@@ -24,11 +25,11 @@ function Edit() {
         setType(modalData.type);
          setStatus(modalData.status);
         setPlace(modalData.place);
-     //   console.log(modalData);
+        setGood(goods.filter(g=>modalData.good === g.title )[0]?.id??0);
     }, [modalData]);
 
     const handleEdit = () => {
-        const data = { status,lastTime,totalKm,name, type, place,id: modalData.id};
+        const data = { status,lastTime,totalKm,name, type,good, place,id: modalData.id};
         setEditData(data);
         setModalData(null);
         console.log(modalData);
@@ -79,6 +80,16 @@ function Edit() {
                             <input type="text" className="form-control" onChange={e => setPlace(e.target.value)} value={place} />
                             <small className="form-text text-muted">Enter place here.</small>
                         </div>
+                        <div className="form-group">
+                    <label>Rentables</label>
+                    <select className="form-control" onChange={e => setGood(e.target.value)} value={good}>
+                        <option value="0" disabled>Select Goods</option>
+                        {
+                            goods ? goods.map(g => <option key={g.id} value={g.id}>{g.title}</option>) : null
+                        }
+                    </select>
+                    <small className="form-text text-muted">Select Rentable</small>
+                </div>
                     </div>
                     <div className="modal-footer">
                         <button type="button" className="btn btn-outline-secondary" onClick={() => setModalData(null)}>Close</button>

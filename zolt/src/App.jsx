@@ -8,18 +8,29 @@ import List from "./Components/List";
 import Edit from "./Components/Edit";
 import ZoltContext from "./Components/ZoltContext";
 import Message from "./Components/Message";
+import GoodContext from "./Components/goods/GoodContext";
+import CreateGoods from './Components/goods/Create'
+import ListGoods from './Components/goods/List'
 
 function App() {
+
   const [lastUpdate, setLastUpdate] = useState(Date.now());
+
+
   const [zolts, setZolts] = useState(null);
   const [modalData, setModalData] = useState(null);
   const [createData, setCreateData] = useState(null);
   const [deleteData, setDeleteData] = useState(null);
   const [editData, setEditData] = useState(null);
+
+  const [goods, setGoods] = useState(null);
+  const [createDataGoods, setCreateDataGoods] = useState(null);
+  const [deleteDataGoods, setDeleteDataGoods] = useState(null);
+
   const [message, setMessage] = useState(null);
   const [disableCreate, setDisableCreate] = useState(false);
 
-
+//////////// zolts////////////////
   //Read
   useEffect(() => {
     axios
@@ -69,6 +80,36 @@ function App() {
       });
   }, [editData]);
 
+
+//////////goods/////////////
+ // Create
+ useEffect(() => {
+  if (null === createDataGoods) return;
+  axios
+    .post("http://localhost:3003/rent", createDataGoods)
+    .then(_=> {
+      setLastUpdate(Date.now());
+    })
+  
+}, [createDataGoods]);
+ //Read
+ useEffect(() => {
+  axios
+    .get("http://localhost:3003/rent")
+    .then((res) => setGoods(res.data));
+}, [lastUpdate]);
+
+// Delete
+useEffect(() => {
+  if (null === deleteDataGoods) return;
+  axios
+    .delete("http://localhost:3003/rent/" + deleteDataGoods.id)
+    .then((res) => {
+      showMessage(res.data.msg);
+      setLastUpdate(Date.now());
+    });
+}, [deleteDataGoods]);
+
   const showMessage = (msg) => {
     setMessage(msg);
     setTimeout(() => setMessage(null), 5000);
@@ -85,12 +126,20 @@ function App() {
         message,
         disableCreate,
         setDisableCreate,
+        goods
       }}
     >
+      <GoodContext.Provider value={{
+        setCreateData: setCreateDataGoods,  
+        goods, 
+        setDeleteData:setDeleteDataGoods
+      }}>
       <div className="container">
         <div className="row">
           <div className="col-4">
             <Create />
+            <CreateGoods/>
+            <ListGoods/>
           </div>
           <div className="col-8">
             <List></List>
@@ -99,6 +148,7 @@ function App() {
       </div>
       <Edit />
       <Message />
+      </GoodContext.Provider>
     </ZoltContext.Provider>
   );
 }

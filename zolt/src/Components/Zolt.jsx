@@ -24,6 +24,7 @@ function Zolt({zolt}) {
                 <b>{zolt.totalKm}</b>
                 <b>{zolt.status}</b>
                 <b>{zolt.place}</b>
+                <b>{zolt.good}</b>
               {/* <b>{zolt.type}</b> */}
             </div>
             <div className="buttons">

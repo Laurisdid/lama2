@@ -5,7 +5,7 @@ import date from "./date";
 import stringGen from "./sringgen";
 
 function Create() {
-  const { setCreateData, disableCreate, setDisableCreate } =
+  const { setCreateData, disableCreate, setDisableCreate,goods} =
     useContext(ZoltContext);
 
   // const [id, setId] = useState("");
@@ -15,6 +15,7 @@ function Create() {
   const [name, setName] = useState(stringGen(8));
   const [type, setType] = useState("1");
   const [place, setPlace] = useState("Gamykla");
+  const [good, setGood] = useState("0")
 
   const handleCreate = () => {
     setDisableCreate(true);
@@ -26,6 +27,7 @@ function Create() {
       name,
       type,
       place,
+      good
     };
     setCreateData(data);
     // setId("");
@@ -35,6 +37,7 @@ function Create() {
     setName(stringGen(8));
     setType("1");
     setPlace("Gamykla");
+    setGood('0');
   };
 
   return (
@@ -75,6 +78,16 @@ function Create() {
             Enter day/month/year here.
           </small>
         </div>
+        <div className="form-group">
+                    <label>Rentables</label>
+                    <select className="form-control" onChange={e => setGood(e.target.value)} value={good}>
+                        <option value="0" disabled>Select Goods</option>
+                        {
+                            goods ? goods.map(g => <option key={g.id} value={g.id}>{g.title}</option>) : null
+                        }
+                    </select>
+                    <small className="form-text text-muted">Select Rentable</small>
+                </div>
         <div className="form-group">
           <label>Place</label>
           <input

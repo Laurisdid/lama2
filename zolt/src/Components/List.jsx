@@ -44,6 +44,7 @@ function List({setDeleteData, setModalData}) {
                                 <b>totalKm  .</b>
                                 <b>status  .</b>
                                 <b>place  .</b>
+                                <b>Rentable</b>
                             </div>
                             <select defaultValue={'DEFAULT'} onChange={(e) => setSortState(e.target.value)}>
                                 <option value="DEFAULT" disabled>None</option>
