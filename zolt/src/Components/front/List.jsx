@@ -1,28 +1,24 @@
-// import { useState } from "react";
-
 import { useContext } from "react";
 import Good from "./Good";
-import GoodContext from "./GoodContext";
+import FrontContext from "./FrontContext";
 
-function List({setDeleteData, setModalData}) {
+function List() {
 
-    const {goods} = useContext(GoodContext);
+    const {goods} = useContext(FrontContext);
 
     return (
-        <div className="card mt-4">
+        <div className="card mt-4 mb-4">
             <div className="card-header">
-                <h2>List </h2>
+                <h2>List</h2>
 
             </div>
             <div className="card-body">
                 <ul className="list-group">
-                  
                     {
                         goods ? goods.map(good => <Good
                             key={good.id}
                             good={good}
-                            setDeleteData={setDeleteData}
-                            setModalData={setModalData}
+
                         ></Good>) : null
                     }
                 </ul>

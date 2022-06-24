@@ -15,7 +15,8 @@ function Good({ good }) {
         <li className="list-group-item">
             <div className="item">
                 <div className="content">
-                    <b>{good.title}   {good.trees_count ? '(' + good.trees_count + ')' : <button type="button" className="btn btn-outline-danger ml-2" onClick={handleDelete}>Delete</button>}</b>
+                    
+                    <b>{good.title}   {good.TotalModules ? '(' + good.TotalModules + ')' : <button type="button" className="btn btn-outline-danger ml-2" onClick={handleDelete}>Delete</button>}</b>
                 </div>
             </div>
         </li>
