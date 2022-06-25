@@ -167,3 +167,34 @@ WHERE id = ?
     res.send({ result, msg: { text: "Deleted", type: "danger" } });
   });
 });
+//READ
+app.get("/front/zolts", (req, res) => {
+  const sql = `
+  SELECT
+ z.name AS name, g.title AS good,status,lastTime,totalKm,type,place,z.id , GROUP_CONCAT(c.comment, '-^o^-') AS coms
+  FROM zolts AS z
+  LEFT JOIN goods as g
+  ON z.good_id = g.id
+  LEFT JOIN comments AS c
+  ON c.zolt_id = z.id
+  GROUP BY z.id
+`;
+  con.query(sql, (err, result) => {
+    if (err) throw err;
+    res.send(result);
+  });
+});
+//CREATE
+// INSERT INTO table_name (column1, column2, column3, ...)
+// VALUES (value1, value2, value3, ...);
+app.post("/front/comments", (req, res) => {
+  const sql = `
+INSERT INTO comments
+(comment, zolt_id)
+VALUES (?,?)
+`;
+  con.query(sql, [req.body.com, req.body.zoltId], (err, result) => {
+    if (err) throw err;
+    res.send({ result, msg: { text: "Created", type: "success" } });
+  });
+});
