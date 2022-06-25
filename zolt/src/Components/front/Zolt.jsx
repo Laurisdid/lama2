@@ -29,13 +29,13 @@ function Zolt({zolt}) {
             <div className="buttons">
                 <button type="button" className="btn btn-outline-success ml-2" onClick={handleComment}>Add Comment</button>
              
-            </div>
+            </div></div>
             <div>
                 {
                 zolt.coms? zolt.coms.slice(0,-5).split('-^o^-').map((c,i)=><li key={i}>{c}</li>):null
                 }
             </div>
-        </div>
+        
     </li>
     );
 }
