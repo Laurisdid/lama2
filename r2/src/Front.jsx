@@ -9,6 +9,7 @@ function Front() {
     const [goods, setGoods] = useState(null);
     const [trees, setTrees] = useState(null);
     const [createComment, setCreateComment] = useState(null);
+    const [lastUpdate, setLastUpdate] = useState(Date.now());
 
     // Read
     useEffect(() => {
@@ -17,7 +18,7 @@ function Front() {
                 console.log(res.data);
                 setGoods(res.data);
             });
-    }, []);
+    }, [lastUpdate]);
 
     useEffect(() => {
         axios.get('http://localhost:3003/front/medziai')
@@ -25,7 +26,7 @@ function Front() {
                 console.log(res.data);
                 setTrees(res.data);
             });
-    }, []);
+    }, [lastUpdate]);
 
 
 
@@ -34,7 +35,7 @@ function Front() {
     if (null === createComment) return;
     axios.post('http://localhost:3003/front/komentarai', createComment)
       .then(_ => {
-        // setLastUpdate(Date.now());
+         setLastUpdate(Date.now());
       })
   }, [createComment]);
 

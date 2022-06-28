@@ -22,18 +22,17 @@ function Tree({ tree }) {
                     <i>{tree.height.toFixed(2)} m</i>
                     <u>{tree.good}</u>
                 </div>
-                <div className="form-group">
-                    <label>Your comment here</label>
+                <ul className="list-group mt-2">
+                    {
+                    tree.coms ? tree.coms.slice(0, -5).split('-^o^-,').map((c, i) => <li className="list-group-item" key={i}>{c}</li>) : null
+                    }
+                </ul>
+                <div className="form-group mt-3">
                     <textarea className="form-control" value={com} onChange={e => setCom(e.target.value)} rows="3"></textarea>
                 </div>
                 <div className="buttons">
                     <button type="button" className="btn btn-outline-success ml-2" onClick={handleComment}>I want to say</button>
                 </div>
-                <ul>
-                    {
-                    tree.coms ? tree.coms.slice(0, -5).split('-^o^-,').map((c, i) => <li key={i}>{c}</li>) : null
-                    }
-                </ul>
             </div>
         </li>
     );

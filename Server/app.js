@@ -5,196 +5,186 @@ const cors = require("cors");
 app.use(cors());
 const mysql = require("mysql");
 app.use(
-  express.urlencoded({
-    extended: true,
-  })
+    express.urlencoded({
+        extended: true,
+    })
 );
 app.use(express.json());
 
+
 const con = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "",
-  database: "lam",
+    host: "localhost",
+    user: "root",
+    password: "",
+    database: "lama",
 });
 
-//Routes6
+//Routes
 //READ
+// SELECT column_name(s)
+// FROM table1
+// LEFT JOIN table2
+// ON table1.column_name = table2.column_name;
 app.get("/medziai", (req, res) => {
-  const sql = `
-  SELECT
- z.name AS name, g.title AS good,status,lastTime,totalKm,type,place,z.id
-  FROM zolts AS z
-  LEFT JOIN goods as g
-  ON z.good_id = g.id
+    const sql = `
+    SELECT
+    t.title, g.title AS good, height, type, t.id, GROUP_CONCAT(c.com, '-^o^-') AS coms, GROUP_CONCAT(c.id) AS coms_id
+    FROM trees AS t
+    LEFT JOIN goods AS g
+    ON t.good_id = g.id
+    LEFT JOIN comments AS c
+    ON c.tree_id = t.id
+    GROUP BY t.id
 `;
-  con.query(sql, (err, result) => {
-    if (err) throw err;
-    res.send(result);
-  });
+    con.query(sql, (err, result) => {
+        if (err) throw err;
+        res.send(result);
+    });
 });
+app.get("/gerybes", (req, res) => {
+    const sql = `
+  SELECT
+  g.title, g.id, COUNT(t.id) AS trees_count
+  FROM trees AS t
+  RIGHT JOIN goods AS g
+  ON t.good_id = g.id
+  GROUP BY g.id
+  ORDER BY trees_count DESC
+`;
+    con.query(sql, (err, result) => {
+        if (err) throw err;
+        res.send(result);
+    });
+});
+
+
+app.get("/front/gerybes", (req, res) => {
+    const sql = `
+  SELECT
+  g.title, g.id, COUNT(t.id) AS trees_count, GROUP_CONCAT(t.title) as tree_titles
+  FROM trees AS t
+  RIGHT JOIN goods AS g
+  ON t.good_id = g.id
+  GROUP BY g.id
+  ORDER BY g.title
+`;
+    con.query(sql, (err, result) => {
+        if (err) throw err;
+        res.send(result);
+    });
+});
+
+app.get("/front/medziai", (req, res) => {
+    const sql = `
+  SELECT
+  t.title, g.title AS good, height, type, t.id, GROUP_CONCAT(c.com, '-^o^-') AS coms
+  FROM trees AS t
+  LEFT JOIN goods AS g
+  ON t.good_id = g.id
+  LEFT JOIN comments AS c
+  ON c.tree_id = t.id
+  GROUP BY t.id
+`;
+    con.query(sql, (err, result) => {
+        if (err) throw err;
+        res.send(result);
+    });
+});
+
 //CREATE
+
 // INSERT INTO table_name (column1, column2, column3, ...)
 // VALUES (value1, value2, value3, ...);
 app.post("/medziai", (req, res) => {
-  const sql = `
-INSERT INTO zolts
-(status, lastTime, totalKm, name, type, place,good_id)
-VALUES (?, ?, ?, ?, ?, ?,?)
+    const sql = `
+INSERT INTO trees
+(type, title, height, good_id)
+VALUES (?, ?, ?, ?)
 `;
-  con.query(
-    sql,
-    [
-      req.body.status,
-      req.body.lastTime,
-      req.body.totalKm,
-      req.body.name,
-      req.body.type,
-      req.body.place,
-      req.body.good !== "0" ? req.body.good : null,
-    ],
-    (err, result) => {
-      if (err) throw err;
-      res.send({ result, msg: { text: "Created", type: "success" } });
-    }
-  );
+    con.query(sql, [req.body.type, req.body.title, req.body.height ? req.body.height : 0, req.body.good !== '0' ? req.body.good : null], (err, result) => {
+        if (err) throw err;
+        res.send({ result, msg: { text: 'OK, Zuiki', type: 'success' } });
+    });
 });
+app.post("/gerybes", (req, res) => {
+    const sql = `
+INSERT INTO goods
+(title)
+VALUES (?)
+`;
+    con.query(sql, [req.body.title], (err, result) => {
+        if (err) throw err;
+        res.send({ result, msg: { text: 'OK, Zuiki', type: 'success' } });
+    });
+});
+
+app.post("/front/komentarai", (req, res) => {
+    const sql = `
+INSERT INTO comments
+(com, tree_id)
+VALUES (?, ?)
+`;
+    con.query(sql, [req.body.com, req.body.treeId], (err, result) => {
+        if (err) throw err;
+        res.send({ result, msg: { text: 'OK, Zuiki', type: 'success' } });
+    });
+});
+
 
 //DELETE
 // DELETE FROM table_name WHERE condition;
-app.delete("/medziai/:zoltId", (req, res) => {
-  const sql = `
-DELETE FROM zolts
+app.delete("/medziai/:treeId", (req, res) => {
+    const sql = `
+DELETE FROM trees
 WHERE id = ?
 `;
-  con.query(sql, [req.params.zoltId], (err, result) => {
-    if (err) throw err;
-    res.send({ result, msg: { text: "Deleted", type: "danger" } });
-  });
+    con.query(sql, [req.params.treeId], (err, result) => {
+        if (err) throw err;
+        res.send({ result, msg: { text: 'OK, Bebrai', type: 'info' } });
+    });
 });
+
+app.delete("/gerybes/:goodId", (req, res) => {
+    const sql = `
+DELETE FROM goods
+WHERE id = ?
+`;
+    con.query(sql, [req.params.goodId], (err, result) => {
+        if (err) throw err;
+        res.send({ result, msg: { text: 'OK, Bebrai', type: 'info' } });
+    });
+});
+
+
+app.delete("/komentarai/:comId", (req, res) => {
+    const sql = `
+DELETE FROM comments
+WHERE id = ?
+`;
+    con.query(sql, [req.params.comId], (err, result) => {
+        if (err) throw err;
+        res.send({ result, msg: { text: 'Komentaro pabaiga', type: 'info' } });
+    });
+});
+
 
 //EDIT
 // UPDATE table_name
 // SET column1 = value1, column2 = value2, ...
 // WHERE condition;
 app.put("/medziai/:treeId", (req, res) => {
-  const sql = `
-    UPDATE zolts
-    SET status = ?, lastTime = ?, totalKm = ?, name = ?, type = ?, place = ?, good_id=?
+    const sql = `
+    UPDATE trees
+    SET title = ?, type = ?, height = ?, good_id = ?
     WHERE id = ?
 `;
-  con.query(
-    sql,
-    [
-      req.body.status,
-      req.body.lastTime,
-      req.body.totalKm,
-      req.body.name,
-      req.body.type,
-      req.body.place,
-      req.body.good,
-      req.params.treeId,
-    ],
-    (err, result) => {
-      if (err) throw err;
-      res.send({ result, msg: { text: "Edited", type: "info" } });
-    }
-  );
+    con.query(sql, [req.body.title, req.body.type, req.body.height, req.body.good, req.params.treeId], (err, result) => {
+        if (err) throw err;
+        res.send({ result, msg: { text: 'OK, Barsukai', type: 'danger' } });
+    });
 });
+
 
 app.listen(port, () => {
-  console.log(`Bebras klauso porto Nr ${port}`);
-});
-
-///nuoma///
-//CREATE
-// INSERT INTO table_name (column1, column2, column3, ...)
-// VALUES (value1, value2, value3, ...);
-app.post("/rent", (req, res) => {
-  const sql = `
-INSERT INTO goods
-(title)
-VALUES (?)
-`;
-  con.query(sql, [req.body.title], (err, result) => {
-    if (err) throw err;
-    res.send({ result, msg: { text: "Created", type: "success" } });
-  });
-});
-//READ
-app.get("/rent", (req, res) => {
-  const sql = `
-  SELECT
-  g.title, g.id, COUNT(z.id) AS TotalModules
-  FROM zolts AS z
-  RIGHT JOIN goods as g
-  ON z.good_id = g.id
-  GROUP BY g.id
-  ORDER BY COUNT(z.id) DESC
-`;
-  con.query(sql, (err, result) => {
-    if (err) throw err;
-    res.send(result);
-  });
-});
-
-
-//READ
-app.get("/front/rent", (req, res) => {
-  const sql = `
-  SELECT
-  g.title, g.id, COUNT(z.id) AS TotalModules, GROUP_CONCAT(z.name) as zolt_titles
-  FROM zolts AS z
-  RIGHT JOIN goods as g
-  ON z.good_id = g.id
-  GROUP BY g.id
-  ORDER BY g.title
-`;
-  con.query(sql, (err, result) => {
-    if (err) throw err;
-    res.send(result);
-  });
-});
-//DELETE
-// DELETE FROM table_name WHERE condition;
-app.delete("/rent/:goodId", (req, res) => {
-  const sql = `
-DELETE FROM goods
-WHERE id = ?
-`;
-  con.query(sql, [req.params.goodId], (err, result) => {
-    if (err) throw err;
-    res.send({ result, msg: { text: "Deleted", type: "danger" } });
-  });
-});
-//READ
-app.get("/front/zolts", (req, res) => {
-  const sql = `
-  SELECT
- z.name AS name, g.title AS good,status,lastTime,totalKm,type,place,z.id , GROUP_CONCAT(c.comment, '-^o^-') AS coms
-  FROM zolts AS z
-  LEFT JOIN goods as g
-  ON z.good_id = g.id
-  LEFT JOIN comments AS c
-  ON c.zolt_id = z.id
-  GROUP BY z.id
-`;
-  con.query(sql, (err, result) => {
-    if (err) throw err;
-    res.send(result);
-  });
-});
-//CREATE
-// INSERT INTO table_name (column1, column2, column3, ...)
-// VALUES (value1, value2, value3, ...);
-app.post("/front/comments", (req, res) => {
-  const sql = `
-INSERT INTO comments
-(comment, zolt_id)
-VALUES (?,?)
-`;
-  con.query(sql, [req.body.com, req.body.zoltId], (err, result) => {
-    if (err) throw err;
-    res.send({ result, msg: { text: "Created", type: "success" } });
-  });
+    console.log(`Bebras klauso porto Nr ${port}`);
 });

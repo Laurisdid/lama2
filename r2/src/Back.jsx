@@ -32,6 +32,13 @@ function Back() {
   const [message, setMessage] = useState(null);
   const [disableCreate, setDisableCreate] = useState(false);
 
+
+  useEffect(()=>{
+    setInterval(()=>setLastUpdate(Date.now(),3000))
+  },[])
+
+
+
   //////////////////TREES?/////////////////////////////
   //Read
   useEffect(() => {
@@ -111,7 +118,14 @@ useEffect(() => {
 
 
 
-
+    // DELETE COMMENT
+    const handleDeleteComment = id => {
+      axios.delete('http://localhost:3003/komentarai/' + id)
+      .then(res => {
+        showMessage(res.data.msg);
+        setLastUpdate(Date.now());
+      });
+  }
 
 
 
@@ -133,7 +147,8 @@ useEffect(() => {
         message,
         disableCreate,
         setDisableCreate,
-        goods
+        goods,
+        handleDeleteComment
       }
     }>
       <GoodContext.Provider value={{

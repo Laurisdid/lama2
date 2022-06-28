@@ -36,7 +36,7 @@ function Zolt({zolt}) {
                 }
             </div>
         
-    </li>
+    </li> 
     );
 }
 
