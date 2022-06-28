@@ -77,7 +77,7 @@ app.get("/front/gerybes", (req, res) => {
 app.get("/front/medziai", (req, res) => {
     const sql = `
   SELECT
-  t.title, g.title AS good, height, type, t.id, GROUP_CONCAT(c.com, '-^o^-') AS coms
+  t.title, g.title AS good, height, type, t.id, GROUP_CONCAT(c.com, '-^o^-') AS coms, t.rates, t.rate_sum
   FROM trees AS t
   LEFT JOIN goods AS g
   ON t.good_id = g.id
@@ -183,6 +183,20 @@ app.put("/medziai/:treeId", (req, res) => {
         res.send({ result, msg: { text: 'OK, Barsukai', type: 'danger' } });
     });
 });
+
+
+app.put("/front/balsuok/:treeId", (req, res) => {
+    const sql = `
+    UPDATE trees
+    SET rates = rates + 1, rate_sum = rate_sum + ?
+    WHERE id = ?
+`;
+    con.query(sql, [req.body.rate, req.params.treeId], (err, result) => {
+        if (err) throw err;
+        res.send({ result, msg: { text: 'Tu prabalsavai', type: 'danger' } });
+    });
+});
+
 
 
 app.listen(port, () => {

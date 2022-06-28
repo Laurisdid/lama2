@@ -11,6 +11,8 @@ function Front() {
     const [createComment, setCreateComment] = useState(null);
     const [lastUpdate, setLastUpdate] = useState(Date.now());
 
+    const [rateNow, setRateNow] = useState(null);
+
     // Read
     useEffect(() => {
         axios.get('http://localhost:3003/front/gerybes')
@@ -30,14 +32,25 @@ function Front() {
 
 
 
-  // Create
-  useEffect(() => {
-    if (null === createComment) return;
-    axios.post('http://localhost:3003/front/komentarai', createComment)
-      .then(_ => {
-         setLastUpdate(Date.now());
-      })
-  }, [createComment]);
+    // Create
+    useEffect(() => {
+        if (null === createComment) return;
+        axios.post('http://localhost:3003/front/komentarai', createComment)
+            .then(_ => {
+                setLastUpdate(Date.now());
+            })
+    }, [createComment]);
+
+
+    // Rate
+    // Create
+    useEffect(() => {
+        if (null === rateNow) return;
+        axios.put('http://localhost:3003/front/balsuok/' + rateNow.id, rateNow)
+            .then(_ => {
+                setLastUpdate(Date.now());
+            })
+    }, [rateNow]);
 
 
 
@@ -46,7 +59,8 @@ function Front() {
             {
                 goods,
                 trees,
-                setCreateComment
+                setCreateComment,
+                setRateNow
             }
         }>
             <div className="container">
