@@ -1,22 +1,28 @@
-import Back from "./Back"
-import Front from "./Front";
+import './bootstrap.css';
+import './App.scss';
 import {
     BrowserRouter,
     Routes,
     Route,
-  } from "react-router-dom";
-//npm install react-router-dom@6
-function App(){
+} from "react-router-dom";
+import Back from './Components/Back/Back';
+import Front from './Components/Front/Front';
 
-    return(
+
+function App() {
+
+    return (
         <BrowserRouter>
+        
         <Routes>
-            <Route path="/"element={<Front/>}/>
-            <Route path="/admin"element={<Back show="admin"/>}/>
-            <Route path="/admin/cats"element={<Front show="cats"/>}/>
-            <Route path="/admin/products"element={<Back show="products"/>}/>
+            <Route path="/" element={<Front/>} />
+            <Route path="/admin" element={<Back show="admin" />} />
+            <Route path="/admin/cats" element={<Back show="cats"/>} />
+            <Route path="/admin/products" element={<Back show="products"/>} />
         </Routes>
+            
         </BrowserRouter>
     )
 }
-export default App
+
+export default App;
