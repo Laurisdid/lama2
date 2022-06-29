@@ -1,10 +1,22 @@
 import Nav from "../Nav";
-function Crud(){
-    return(
+import Create from "./Create";
+import List from "./List";
+
+function Crud() {
+    return (
         <>
-        <Nav/>
-        <h1>cats</h1>
+            <Nav />
+            <div className="container">
+                <div className="row">
+                    <div className="col-4">
+                        <Create />
+                    </div>
+                    <div className="col-8">
+                        <List/>
+                    </div>
+                </div>
+            </div>
         </>
     )
 }
-export default Crud
+export default Crud;
