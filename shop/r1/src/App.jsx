@@ -1,10 +1,12 @@
 import './bootstrap.css';
 import './App.scss';
+
 import {
     BrowserRouter,
     Routes,
     Route,
 } from "react-router-dom";
+
 import Back from './Components/Back/Back';
 import Front from './Components/Front/Front';
 
