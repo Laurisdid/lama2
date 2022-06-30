@@ -18,6 +18,8 @@ function Back({ show }) {
     const [editCat, setEditCat] = useState(null);
     const [modalCat, setModalCat] = useState(null);
 
+    const [createProduct, setCreateProduct] = useState(null);
+
     // Read
     useEffect(() => {
         axios.get('http://localhost:3003/admin/cats')
@@ -36,6 +38,17 @@ function Back({ show }) {
                 showMessage({ text: error.message, type: 'danger' });
             })
     }, [createCat]);
+    useEffect(() => {
+        if (null === createProduct) return;
+        axios.post('http://localhost:3003/admin/products', createProduct)
+            .then(res => {
+                showMessage(res.data.msg);
+                setLastUpdate(Date.now());
+            })
+            .catch(error => {
+                showMessage({ text: error.message, type: 'danger' });
+            })
+    }, [createProduct]);
 
     // Delete
     useEffect(() => {
@@ -50,18 +63,21 @@ function Back({ show }) {
             })
     }, [deleteCat]);
 
-    // edit
+
+    // Edit
     useEffect(() => {
-      if (null === editCat) return;
-      axios.put('http://localhost:3003/admin/cats/' + editCat.id,editCat)
-          .then(res => {
-              showMessage(res.data.msg);
-              setLastUpdate(Date.now());
-          })
-          .catch(error => {
-              showMessage({ text: error.message, type: 'danger' });
-          })
-  }, [editCat]);
+        if (null === editCat) return;
+        axios.put('http://localhost:3003/admin/cats/' + editCat.id, editCat)
+            .then(res => {
+                showMessage(res.data.msg);
+                setLastUpdate(Date.now());
+            })
+            .catch(error => {
+                showMessage({ text: error.message, type: 'danger' });
+            })
+    }, [editCat]);
+
+
 
     const showMessage = (m) => {
         const id = uuidv4();
@@ -81,7 +97,8 @@ function Back({ show }) {
             messages,
             setEditCat,
             setModalCat,
-            modalCat
+            modalCat,
+            setCreateProduct
         }}>
             {
                 show === 'admin' ?

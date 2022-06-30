@@ -71,6 +71,18 @@ app.put("/admin/cats/:id", (req, res) => {
     });
 });
 
+// Products
+app.post("/admin/products", (req, res) => {
+    const sql = `
+    INSERT INTO products
+    (title, price, in_stock, cats_id)
+    VALUES (?, ?, ?, ?)
+    `;
+    con.query(sql, [req.body.title, req.body.price, req.body.inStock, req.body.cat], (err, result) => {
+        if (err) throw err;
+        res.send({ result, msg: { text: 'OK, new and shiny product was created', type: 'success' } });
+    });
+});
 
 
 app.listen(port, () => {
