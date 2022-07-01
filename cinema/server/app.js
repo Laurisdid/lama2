@@ -94,6 +94,22 @@ app.get("/admin/products", (req, res) => {
         res.send(result);
     });
 });
+//EDIT
+// UPDATE table_name
+// SET column1 = value1, column2 = value2, ...
+// WHERE condition;
+app.put("/medziai/:prodId", (req, res) => {
+    const sql = `
+    UPDATE products
+    SET title = ?, price = ?, rating = ?, cat_id = ?
+    WHERE id = ?
+`;
+    con.query(sql, [req.body.title, req.body.price, req.body.rating, req.body.cat, req.params.prodId], (err, result) => {
+        if (err) throw err;
+        res.send({ result, msg: { text: 'OK, Barsukai', type: 'danger' } });
+    });
+});
+
 
 
 

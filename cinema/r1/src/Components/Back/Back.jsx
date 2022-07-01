@@ -22,7 +22,7 @@ function Back({ show }) {
     const [createProduct, setCreateProduct] = useState(null);
     const [deleteProduct,setDeleteProduct] = useState(null);
     const [products, setProducts] = useState(null);
-
+    const [editProd, setEditProd] = useState(null);
 
     // Read
     useEffect(() => {
@@ -88,7 +88,18 @@ function Back({ show }) {
                 showMessage({ text: error.message, type: 'danger' });
             })
     }, [editCat]);
-
+      // Edit product ?
+      useEffect(() => {
+        if (null === editProd) return;
+        axios.put('http://localhost:3003/admin/products/' + editProd.id, editProd)
+            .then(res => {
+                showMessage(res.data.msg);
+                setLastUpdate(Date.now());
+            })
+            .catch(error => {
+                showMessage({ text: error.message, type: 'danger' });
+            })
+    }, [editProd]);
 
 
     const showMessage = (m) => {
@@ -111,7 +122,8 @@ function Back({ show }) {
             setModalCat,
             modalCat,
             setCreateProduct,
-            products
+            products,
+            setEditProd
         }}>
             {
                 show === 'admin' ?
