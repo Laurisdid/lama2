@@ -3,14 +3,14 @@ import BackContext from '../BackContext';
 
 function Line({ line }) {
 
-    const { setDeleteCat,setModalCat } = useContext(BackContext);
+    const { setDeleteProduct, setModalProduct } = useContext(BackContext);
 
     const handleDelete = () => {
-         setDeleteCat(line);
+        setDeleteProduct(line);
     }
 
     const handleEdit = () => {
-        setModalCat(line);
+        setModalProduct(line);
     }
 
     return (
@@ -18,6 +18,11 @@ function Line({ line }) {
             <div className="item">
                 <div className="content">
                     <b>{line.title}</b>
+                    <i>{line.price.toFixed(2)} EUR</i>
+                    <div className="box" style={{backgroundColor: line.in_stock ? 'coral' : null}}></div>
+                    <span>{new Date(Date.parse(line.lu)).toLocaleString()}</span>
+                    <div className="cat">{line.cat}</div>
+
                 </div>
                 <div className="buttons">
                     <button type="button" className="btn btn-outline-success ml-2" onClick={handleEdit}>Edit</button>

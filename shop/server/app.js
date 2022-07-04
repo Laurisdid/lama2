@@ -19,10 +19,10 @@ const con = mysql.createConnection({
 });
 
 
-// CATS
+// CATS 
 app.post("/admin/cats", (req, res) => {
     const sql = `
-    INSERT INTO category
+    INSERT INTO cats
     (title)
     VALUES (?)
     `;
@@ -35,7 +35,7 @@ app.post("/admin/cats", (req, res) => {
 app.get("/admin/cats", (req, res) => {
     const sql = `
   SELECT *
-  FROM category
+  FROM cats
   ORDER BY title
 `;
     con.query(sql, (err, result) => {
@@ -44,32 +44,29 @@ app.get("/admin/cats", (req, res) => {
     });
 });
 
-
-
-// delete
 app.delete("/admin/cats/:id", (req, res) => {
     const sql = `
-    DELETE FROM category
-    where id=?
+    DELETE FROM cats
+    WHERE id = ?
     `;
     con.query(sql, [req.params.id], (err, result) => {
         if (err) throw err;
-        res.send({ result, msg: { text: 'OK, Cat was deleted', type: 'success' } });
+        res.send({ result, msg: { text: 'OK, Cat gone', type: 'success' } });
     });
 });
 
-// edit
 app.put("/admin/cats/:id", (req, res) => {
     const sql = `
-    UPDATE category
-    SET title =?
-    where id=?
+    UPDATE cats
+    SET title = ?
+    WHERE id = ?
     `;
     con.query(sql, [req.body.title, req.params.id], (err, result) => {
         if (err) throw err;
-        res.send({ result, msg: { text: 'OK, Cat was updated', type: 'success' } });
+        res.send({ result, msg: { text: 'OK, Cat updated. Now it is as new', type: 'success' } });
     });
 });
+
 
 // Products
 app.post("/admin/products", (req, res) => {
@@ -83,6 +80,34 @@ app.post("/admin/products", (req, res) => {
         res.send({ result, msg: { text: 'OK, new and shiny product was created', type: 'success' } });
     });
 });
+
+app.get("/admin/products", (req, res) => {
+    const sql = `
+  SELECT p.id, price, p.title, c.title AS cat, in_stock,last_update as lu
+  FROM products AS p
+  LEFT JOIN cats AS c
+  ON c.id = p.cats_id
+  ORDER BY title
+`;
+    con.query(sql, (err, result) => {
+        if (err) throw err;
+        res.send(result);
+    });
+});
+
+app.delete("/admin/products/:id", (req, res) => {
+    const sql = `
+    DELETE FROM products
+    WHERE id = ?
+    `;
+    con.query(sql, [req.params.id], (err, result) => {
+        if (err) throw err;
+        res.send({ result, msg: { text: 'OK, Product gone', type: 'success' } });
+    });
+});
+
+
+
 
 
 app.listen(port, () => {

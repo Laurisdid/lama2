@@ -3,7 +3,7 @@ import BackContext from '../BackContext';
 
 function Create() {
 
-    const { cats, setCreateProduct } = useContext(BackContext);
+    const { cats, setCreateProduct, showMessage } = useContext(BackContext);
 
     const [title, setTitle] = useState('');
     const [price, setPrice] = useState('');
@@ -11,6 +11,11 @@ function Create() {
     const [cat, setCat] = useState('0');
 
     const handleCreate = () => {
+        if (cat === '0') {
+            showMessage({ text: 'Please, select cat!', type: 'danger' });
+            return;
+        }
+
         const data = { title, price: parseFloat(price), inStock: inStock ? 1 : 0, cat: parseInt(cat) };
         setCreateProduct(data);
         setTitle('');
@@ -49,8 +54,6 @@ function Create() {
                     </select>
                     <small className="form-text text-muted">Select category here.</small>
                 </div>
-
-
                 <button type="button" className="btn btn-outline-primary" onClick={handleCreate}>Create</button>
             </div>
         </div>

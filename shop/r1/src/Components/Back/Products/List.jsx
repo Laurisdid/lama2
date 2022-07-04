@@ -1,21 +1,20 @@
-import { useContext } from "react";
-import BackContext from "../BackContext";
-import Line from "./Line";
-
+import { useContext } from 'react';
+import Line from './Line';
+import BackContext from '../BackContext';
 
 function List() {
 
-    const {cats} = useContext(BackContext);
+    const {products} = useContext(BackContext);
 
     return (
         <div className="card mt-4">
             <div className="card-header">
-                <h2>List of Categories</h2>
+                <h2>List of Products</h2>
             </div>
             <div className="card-body">
                 <ul className="list-group">
                     {
-                    cats ? cats.map(cat => <Line key={cat.id} line={cat}></Line>) : null
+                    products ? products.map(p => <Line key={p.id} line={p}></Line>) : null
                     }
                 </ul>
             </div>
