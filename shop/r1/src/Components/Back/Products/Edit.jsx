@@ -39,10 +39,10 @@ function Edit() {
         const data = {
             title,
             id: modalProduct.id,
-            in_stock: parseInt(inStock),
+            in_stock: inStock?1:0,
             price: parseFloat(price),
             cat: parseInt(cat),
-            lu: Date.parse(lu)
+            lu: lu
         };
         setEditProduct(data);
         setModalProduct(null);
