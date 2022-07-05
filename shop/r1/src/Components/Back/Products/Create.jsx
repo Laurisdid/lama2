@@ -41,6 +41,7 @@ function Create() {
         setPrice('');
         setInStock(false);
         setCat('0');
+        fileInput.current.value(null)
     }
 
     return (

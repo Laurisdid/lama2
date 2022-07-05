@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const port = 3003;
 const cors = require("cors");
+app.use(express.json({ limit: '10mb' }));
 app.use(cors());
 const mysql = require("mysql");
 app.use(
@@ -83,7 +84,7 @@ app.post("/admin/products", (req, res) => {
 
 app.get("/admin/products", (req, res) => {
     const sql = `
-  SELECT p.id, price, p.title, c.title AS cat, in_stock,last_update as lu
+  SELECT p.id, price, p.title, c.title AS cat, in_stock,last_update as lu,photo
   FROM products AS p
   LEFT JOIN cats AS c
   ON c.id = p.cats_id
@@ -109,10 +110,10 @@ app.delete("/admin/products/:id", (req, res) => {
 app.put("/admin/products/:id", (req, res) => {
     const sql = `
     UPDATE products
-    SET title = ?, price = ?, last_update = ?, cats_id = ?, in_stock = ?
+    SET title = ?, price = ?, last_update = ?, cats_id = ?, in_stock = ?,photo=?
     WHERE id = ?
     `;
-    con.query(sql, [req.body.title, req.body.price, req.body.lu, req.body.cat, req.body.in_stock, req.params.id], (err, result) => {
+    con.query(sql, [req.body.title, req.body.price, req.body.lu, req.body.cat, req.body.in_stock,req.body.photo, req.params.id], (err, result) => {
         if (err) throw err;
         res.send({ result, msg: { text: 'OK, Cat updated. Now it is as new', type: 'success' } });
     });
