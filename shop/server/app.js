@@ -106,6 +106,17 @@ app.delete("/admin/products/:id", (req, res) => {
     });
 });
 
+app.put("/admin/products/:id", (req, res) => {
+    const sql = `
+    UPDATE products
+    SET title = ?, price = ?, last_update = ?, cats_id = ?, in_stock = ?
+    WHERE id = ?
+    `;
+    con.query(sql, [req.body.title, req.body.price, req.body.lu, req.body.cat, req.body.in_stock, req.params.id], (err, result) => {
+        if (err) throw err;
+        res.send({ result, msg: { text: 'OK, Cat updated. Now it is as new', type: 'success' } });
+    });
+});
 
 
 
