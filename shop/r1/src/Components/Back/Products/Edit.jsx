@@ -1,6 +1,6 @@
 import { useEffect, useState, useContext, useRef } from "react";
 import BackContext from "../BackContext";
-import getBase64 from '../../../Functions/getBase64';
+import getBase64 from '../../../getBase64';
 
 function Edit() {
 
