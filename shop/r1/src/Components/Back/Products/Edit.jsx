@@ -1,10 +1,10 @@
-import { useEffect, useState, useContext,useRef } from "react";
+import { useEffect, useState, useContext, useRef } from "react";
 import BackContext from "../BackContext";
-import getBase64 from "../../../getBase64";
+import getBase64 from '../../../Functions/getBase64';
 
 function Edit() {
 
-    const { modalProduct, setEditProduct, setModalProduct, cats } = useContext(BackContext);
+    const { modalProduct, setEditProduct, setModalProduct, cats, setDeletePhoto } = useContext(BackContext);
 
 
     const [title, setTitle] = useState('');
@@ -12,15 +12,8 @@ function Edit() {
     const [inStock, setInStock] = useState(false);
     const [cat, setCat] = useState('0');
     const [lu, setLu] = useState('');
+    const fileInput = useRef();
     const [photoPrint, setPhotoPrint] = useState(null);
-    const fileInput = useRef()
-    const doPhoto = () => {
-        getBase64(fileInput.current.files[0])
-        .then(photo => setPhotoPrint(photo))
-        .catch(_ => {
-            // tylim
-        })
-    }
 
     const setDateFormat = d => {
         //yyyy-MM-ddThh:mm
@@ -34,6 +27,19 @@ function Edit() {
         return out;
     }
 
+    const doPhoto = () => {
+        getBase64(fileInput.current.files[0])
+        .then(photo => setPhotoPrint(photo))
+        .catch(_ => {
+            // tylim
+        })
+    }
+
+    const handleDeletePhoto = () => {
+        setDeletePhoto({id: modalProduct.id});
+        setModalProduct(p => ({...p, photo: null}));
+    }
+
     useEffect(() => {
         if (null === modalProduct) {
             return;
@@ -43,7 +49,7 @@ function Edit() {
         setLu(setDateFormat(modalProduct.lu));
         setInStock(modalProduct.in_stock ? true : false);
         setCat(cats.filter(c => c.title === modalProduct.cat)[0].id);
-        setPhotoPrint(modalProduct.photo)
+        setPhotoPrint(modalProduct.photo);
     }, [modalProduct, cats]);
 
     const handleEdit = () => {
@@ -54,7 +60,7 @@ function Edit() {
             price: parseFloat(price),
             cat: parseInt(cat),
             lu: lu,
-            photo:photoPrint
+            photo: photoPrint
         };
         setEditProduct(data);
         setModalProduct(null);
@@ -109,14 +115,14 @@ function Edit() {
                             <input ref={fileInput} type="file" className="form-control" onChange={doPhoto} />
                             <small className="form-text text-muted">Upload Photo.</small>
                         </div>
-                        <div className="photo-bin">
-                            <img src={photoPrint} />
-                        </div>
-
+                        {
+                            photoPrint ? <div className="photo-bin"><img src={photoPrint} alt="nice" /></div> : null
+                        }
                     </div>
                     <div className="modal-footer">
                         <button type="button" className="btn btn-outline-secondary" onClick={() => setModalProduct(null)}>Close</button>
                         <button type="button" className="btn btn-outline-primary" onClick={handleEdit}>Save changes</button>
+                        <button type="button" className="btn btn-outline-danger" onClick={handleDeletePhoto}>Remove Photo</button>
                     </div>
                 </div>
             </div>
