@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 import { useContext, useState } from 'react';
 import BackContext from '../BackContext';
-import getBase64 from '../../../getBase64';
+import getBase64 from '../../Functions/getBase64';
 
 function Create() {
 

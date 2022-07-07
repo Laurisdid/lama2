@@ -1,22 +1,22 @@
 import { useContext } from "react";
-import TreeContext from "./TreeContext";
+import BackContext from "./BackContext";
 
-function Message() {
+function Messages() {
 
-    const {message} = useContext(TreeContext);
-
-    if (null === message) {
-        return null;
-    }
+    const { messages } = useContext(BackContext);
 
     return (
         <div className="show-message">
-            <div className={'alert alert-' + message.type} role="alert">
-            {message.text}
-            </div>
+            {
+                messages.map(message => (
+                    <div className={'alert alert-' + message.type} key={message.id} role="alert">
+                        {message.text}
+                    </div>
+                ))
+            }
         </div>
     );
 
 }
 
-export default Message;
+export default Messages;
