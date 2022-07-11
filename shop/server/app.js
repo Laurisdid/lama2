@@ -98,6 +98,7 @@ app.get("/login-check", (req, res) => {
     });
 });
 
+
 app.post("/login", (req, res) => {
     const key = uuid.v4();
     const sql = `
@@ -192,6 +193,8 @@ app.get("/admin/products", (req, res) => {
     });
 });
 
+
+
 app.delete("/admin/products/:id", (req, res) => {
     const sql = `
     DELETE FROM products
@@ -224,6 +227,37 @@ app.delete("/admin/photos/:id", (req, res) => {
     con.query(sql, [req.params.id], (err, result) => {
         if (err) throw err;
         res.send({ result, msg: { text: 'OK, photo gone. Have a nice day.', type: 'success' } });
+    });
+});
+
+
+
+// FRONT
+
+app.get("/products", (req, res) => {
+    const sql = `
+  SELECT p.id, price, p.title, c.title AS cat, in_stock, last_update AS lu, photo
+  FROM products AS p
+  LEFT JOIN cats AS c
+  ON c.id = p.cats_id
+  ORDER BY title
+`;
+    con.query(sql, (err, result) => {
+        if (err) throw err;
+        res.send(result);
+    });
+});
+
+
+app.get("/cats", (req, res) => {
+    const sql = `
+  SELECT *
+  FROM cats
+  ORDER BY title
+`;
+    con.query(sql, (err, result) => {
+        if (err) throw err;
+        res.send(result);
     });
 });
 
