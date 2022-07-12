@@ -5,9 +5,21 @@ import FrontContext from './FrontContext';
 function SortFilter() {
 
     const [sortBy, setSortBy] = useState('default');
-    const { setProducts, products, cats } = useContext(FrontContext);
+    const { setProducts, products, cats, doFilter, cat, setSearch} = useContext(FrontContext);
 
-    const [cat, setCat] = useState(0);
+    const [s, setS] = useState('');
+
+    
+    const doSearch = e => {
+        setS(e.target.value);
+        setSearch(e.target.value);
+    }
+
+
+
+
+
+
 
     const doSort = e => {
         setSortBy(e.target.value);
@@ -62,12 +74,18 @@ function SortFilter() {
                         <div className="col-4">
                             <div className="form-group">
                                 <label>Filter by Categories</label>
-                                <select className="form-control" onChange={e => setCat(e.target.value)} value={cat}>
+                                <select className="form-control" onChange={e =>doFilter(e.target.value)} value={cat}>
                                     <option value="0">All Cats</option>
                                     {
                                         cats ? cats.map(c => <option key={c.id} value={c.id}>{c.title}</option>) : null
                                     }
                                 </select>
+                            </div>
+                        </div>
+                        <div className="col-4">
+                            <div className="form-group">
+                                <label>Search</label>
+                                <input className="form-control" type="text" value={s} onChange={doSearch} />
                             </div>
                         </div>
                     </div>
