@@ -25,6 +25,7 @@ function App() {
             <Route path="/admin" element={<RequireAuth><Back show="admin" /></RequireAuth>} />
             <Route path="/admin/cats" element={<RequireAuth><Back show="cats"/></RequireAuth>} />
             <Route path="/admin/products" element={<RequireAuth><Back show="products"/></RequireAuth>} />
+            <Route path="/admin/comments" element={<RequireAuth><Back show="com"/></RequireAuth>} />
         </Routes>
             
         </BrowserRouter>

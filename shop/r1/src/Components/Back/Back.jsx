@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import BackContext from './BackContext';
 import CatsCrud from './Cats/Crud';
+import ComCrud from './Com/Crud';
 import Nav from './Nav';
 import ProductsCrud from './Products/Crud';
 import axios from 'axios';
@@ -27,6 +28,9 @@ function Back({ show }) {
     const [modalProduct, setModalProduct] = useState(null);
     const [deletePhoto, setDeletePhoto] = useState(null);
 
+    const [comments, setComments] = useState(null);
+    const [deleteCom, setDeleteCom] = useState(null);
+
     // Read
     useEffect(() => {
         axios.get('http://localhost:3003/admin/cats', authConfig())
@@ -35,6 +39,10 @@ function Back({ show }) {
     useEffect(() => {
         axios.get('http://localhost:3003/admin/products', authConfig())
             .then(res => setProducts(res.data));
+    }, [lastUpdate]);
+    useEffect(() => {
+        axios.get('http://localhost:3003/admin/comments', authConfig())
+            .then(res => setComments(res.data));
     }, [lastUpdate]);
 
     // Create
@@ -95,6 +103,17 @@ function Back({ show }) {
                 showMessage({ text: error.message, type: 'danger' });
             })
     }, [deletePhoto]);
+    useEffect(() => {
+        if (null === deleteCom) return;
+        axios.delete('http://localhost:3003/admin/comments/' + deleteCom.id, authConfig())
+            .then(res => {
+                showMessage(res.data.msg);
+                setLastUpdate(Date.now());
+            })
+            .catch(error => {
+                showMessage({ text: error.message, type: 'danger' });
+            })
+    }, [deleteCom]);
 
 
     // Edit
@@ -149,7 +168,9 @@ function Back({ show }) {
             setEditProduct,
             setModalProduct,
             modalProduct,
-            setDeletePhoto
+            setDeletePhoto,
+            setDeleteCom,
+            comments
         }}>
             {
                 show === 'admin' ?
@@ -157,8 +178,9 @@ function Back({ show }) {
                         <Nav />
                         <h1>BACK</h1>
                     </>
-                    : show === 'cats' ? <CatsCrud /> :
-                        show === 'products' ? <ProductsCrud /> : null
+                    : show === 'cats' ? <CatsCrud /> 
+                        : show === 'com' ? <ComCrud /> :
+                            show === 'products' ? <ProductsCrud /> : null
             }
         </BackContext.Provider>
     )

@@ -237,10 +237,10 @@ app.delete("/admin/photos/:id", (req, res) => {
 app.get("/products", (req, res) => {
     let sql;
     let requests;
-   // console.log(req.query['cat-id']);
+    console.log(req.query['cat-id']);
     if (!req.query['cat-id'] && !req.query['s']) {
         sql = `
-        SELECT p.id, c.id AS cid, price, p.title, c.title AS cat, in_stock, last_update AS lu, photo
+        SELECT com.id AS com_id, com, p.id, c.id AS cid, price, p.title, c.title AS cat, in_stock, last_update AS lu, photo
         FROM products AS p
         LEFT JOIN cats AS c
         ON c.id = p.cats_id
@@ -251,7 +251,7 @@ app.get("/products", (req, res) => {
         requests = [];
     } else if (req.query['cat-id']) {
         sql = `
-        SELECT com.id p.id, c.id AS cid, price, p.title, c.title AS cat, in_stock, last_update AS lu, photo
+        SELECT com.id AS com_id, com, p.id, c.id AS cid, price, p.title, c.title AS cat, in_stock, last_update AS lu, photo
         FROM products AS p
         LEFT JOIN cats AS c
         ON c.id = p.cats_id
@@ -263,7 +263,7 @@ app.get("/products", (req, res) => {
         requests = [req.query['cat-id']];
     } else {
         sql = `
-        SELECT p.id, c.id AS cid, price, p.title, c.title AS cat, in_stock, last_update AS lu, photo
+        SELECT com.id AS com_id, com, p.id, c.id AS cid, price, p.title, c.title AS cat, in_stock, last_update AS lu, photo
         FROM products AS p
         LEFT JOIN cats AS c
         ON c.id = p.cats_id
@@ -306,6 +306,33 @@ app.post("/comments", (req, res) => {
         res.send({ result });
     });
 });
+app.get("/admin/comments", (req, res) => {
+    const sql = `
+  SELECT com.id AS id, com, title
+  FROM comments AS com
+  INNER JOIN
+  products AS p
+  ON com.product_id = p.id
+  ORDER BY p.title
+`;
+    con.query(sql, (err, result) => {
+        if (err) throw err;
+        res.send(result);
+    });
+});
+
+app.delete("/admin/comments/:id", (req, res) => {
+    const sql = `
+    DELETE FROM comments
+    WHERE id = ?
+    `;
+    con.query(sql, [req.params.id], (err, result) => {
+        if (err) throw err;
+        res.send({ result, msg: { text: 'OK, Stupid comment gone', type: 'success' } });
+    });
+});
+
+
 
 
 app.listen(port, () => {

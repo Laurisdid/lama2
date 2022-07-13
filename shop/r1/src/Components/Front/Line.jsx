@@ -10,7 +10,7 @@ function Line({ line }) {
 
 
     const addComment = () => {
-        setAddCom({product_id: line.id, com})
+        setAddCom({product_id: line.id, com});
         setCom('');
     }
 
@@ -30,7 +30,13 @@ function Line({ line }) {
                 </div>
                 <div className="comments">
                     <h5>Comments</h5>
+                    <ul className="list-group">
+                        {
+                            line.com.map(c => <li key={c.id} className="list-group-item">{c.com}</li>)
+                        }
+                    </ul>
                     <div className="form-group">
+                        <label>add comment</label>
                         <textarea className="form-control" rows="3" value={com} onChange={e => setCom(e.target.value)}></textarea>
                     </div>
                     <button type="button" className="btn btn-outline-primary" onClick={addComment}>I want to say</button>
