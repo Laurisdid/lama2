@@ -1,7 +1,5 @@
 nav.nav {
     background-color: aliceblue;
-    justify-content: center;
-    font-size: 24px;
 }
 
 body {
@@ -28,7 +26,8 @@ body {
                 font-size: 75%;
                 color: skyblue;
                 text-decoration: underline;
-                margin: 0 0 0 10px;
+                margin: 0 0 0 40px;
+                cursor: pointer;
             }
         }
         .nest-content {
@@ -55,6 +54,22 @@ body {
         u {
             margin-left: 7px;
             color: skyblue;
+        }
+        &.front {
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            flex-direction: column;
+            .comments {
+                margin: 10px 0;
+                padding: 10px;
+                border: 1px solid pink;
+                border-radius: 5px;
+                width: 100%;
+                h5 {
+                    color: pink;
+                }
+            }
         }
     }
 }
@@ -112,11 +127,27 @@ body {
 
 .show-message {
     display: flex;
-    position: fixed;
+    position: absolute;
     bottom: 50px;
-    right: 50px;
+    right: 0;
     width: 100%;
     justify-content: flex-end;
+    flex-direction: column;
+    align-items: flex-end;
+    z-index: 3;
+    .alert-danger {
+        background-color: #f8d7dac2;
+    }
+    .alert-info {
+        background-color: #d1ecf1c2;
+    }
+    .alert-success {
+        background-color: #d4eddac2;
+    }
+    div {
+        width: 50%;
+        margin-right: 30px;
+    }
 }
 
 button.with-loader {
@@ -130,17 +161,15 @@ button.with-loader:disabled {
         display: inline-block;
     }
 }
+
 .photo-bin {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 10px 20px;
+    margin: 20px 0;
     max-width: 300px;
-    float: right;
     img {
-        
         width: 100%;
         height: auto;
-    
     }
 }

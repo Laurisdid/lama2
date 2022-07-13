@@ -244,15 +244,19 @@ app.get("/products", (req, res) => {
         FROM products AS p
         LEFT JOIN cats AS c
         ON c.id = p.cats_id
+        LEFT JOIN comments AS com
+        ON p.id = com.product_id
         ORDER BY title
         `;
         requests = [];
     } else if (req.query['cat-id']) {
         sql = `
-        SELECT p.id, c.id AS cid, price, p.title, c.title AS cat, in_stock, last_update AS lu, photo
+        SELECT com.id p.id, c.id AS cid, price, p.title, c.title AS cat, in_stock, last_update AS lu, photo
         FROM products AS p
         LEFT JOIN cats AS c
         ON c.id = p.cats_id
+        LEFT JOIN comments AS com
+        ON p.id = com.product_id
         WHERE p.cats_id = ?
         ORDER BY title
         `;
@@ -263,6 +267,8 @@ app.get("/products", (req, res) => {
         FROM products AS p
         LEFT JOIN cats AS c
         ON c.id = p.cats_id
+        LEFT JOIN comments AS com
+        ON p.id = com.product_id
         WHERE p.title LIKE ? 
         ORDER BY title
         `;
@@ -288,7 +294,18 @@ app.get("/cats", (req, res) => {
 });
 
 
-
+// Comments
+app.post("/comments", (req, res) => {
+    const sql = `
+    INSERT INTO comments
+    (com, product_id)
+    VALUES (?, ?)
+    `;
+    con.query(sql, [req.body.com, req.body.product_id, ], (err, result) => {
+        if (err) throw err;
+        res.send({ result });
+    });
+});
 
 
 app.listen(port, () => {
