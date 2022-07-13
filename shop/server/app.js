@@ -237,7 +237,7 @@ app.delete("/admin/photos/:id", (req, res) => {
 app.get("/products", (req, res) => {
     let sql;
     let requests;
-    console.log(req.query['cat-id']);
+   // console.log(req.query['cat-id']);
     if (!req.query['cat-id'] && !req.query['s']) {
         sql = `
         SELECT p.id, c.id AS cid, price, p.title, c.title AS cat, in_stock, last_update AS lu, photo

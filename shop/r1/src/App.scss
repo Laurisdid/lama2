@@ -28,7 +28,7 @@ body {
                 font-size: 75%;
                 color: skyblue;
                 text-decoration: underline;
-                margin: 0 0 0 40px;
+                margin: 0 0 0 10px;
             }
         }
         .nest-content {
@@ -134,10 +134,13 @@ button.with-loader:disabled {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 20px 0;
+    margin: 10px 20px;
     max-width: 300px;
+    float: right;
     img {
+        
         width: 100%;
         height: auto;
+    
     }
 }

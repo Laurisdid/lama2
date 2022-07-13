@@ -9,6 +9,12 @@ function Nav() {
                 <div className="row">
                     <div className="col-12">
                         <nav className="nav">
+                        <NavLink to="/" className="nav-link" style={
+                                ({ isActive }) =>
+                                    isActive ? {
+                                        color: 'crimson'
+                                    } : null
+                            }>Client Side</NavLink>
                             <NavLink to="/admin/" className="nav-link" style={
                                 ({ isActive }) =>
                                     isActive ? {
@@ -27,7 +33,7 @@ function Nav() {
                                         color: 'crimson'
                                     } : null
                             }>Products</NavLink>
-                            <Link to="/logout">Logout</Link>
+                            <Link to="/logout" className="nav-link" style={{marginLeft:"15%"}}>Logout</Link>
                         </nav>
                     </div>
                 </div>
