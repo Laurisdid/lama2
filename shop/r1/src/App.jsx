@@ -32,11 +32,11 @@ function App() {
     )
 }
 
-function RequireAuth({ children }) {
+function RequireAuth({ children,role }) {
     const [view, setView] = useState(<h2>Please wait...</h2>);
   
     useEffect(() => {
-      axios.get('http://localhost:3003/login-check', authConfig())
+      axios.get('http://localhost:3003/login-check?role='+role, authConfig())
         .then(res => {
           if ('ok' === res.data.msg) {
             setView(children);
@@ -45,10 +45,11 @@ function RequireAuth({ children }) {
           }
         })
   
-    }, [children]);
+    }, [children,role]);
   
     return view;
   }
+  
   
   function LoginPage() {
     const navigate = useNavigate();
