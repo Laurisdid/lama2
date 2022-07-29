@@ -38,6 +38,7 @@ function RequireAuth({ children,role }) {
     useEffect(() => {
       axios.get('http://localhost:3003/login-check?role='+role, authConfig())
         .then(res => {
+          console.log(res.data);
           if ('ok' === res.data.msg) {
             setView(children);
           } else {
